@@ -1,5 +1,5 @@
 import data_manager
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 
@@ -57,29 +57,34 @@ def add_new_applicant():
 
 @app.route('/display-all-applicants')
 @app.route('/update-applicant')
+@app.route('/delete-applicant')
 def display_all_applicants():
     all_applicants = data_manager.list_all_applicants()
     return render_template('all_applicants.html',
                            all_applicants=all_applicants)
 
 
-@app.route('/update-applicant/<id>')
+@app.route('/update-applicant/<id>', methods=['GET', 'POST'])
 def update_applicant(id):
     if request.method == 'GET':
         applicant=data_manager.display_applicant(id)
         return render_template('update_applicant.html', applicant=applicant, id=id)
     elif request.method == 'POST':
         form_data = {
-            'id': request.form['id'],
+            'id' : id,
             'first_name': request.form['first_name'],
             'last_name': request.form['last_name'],
             'phone_number': request.form['phone_number'],
             'email': request.form['email']
         }
         data_manager.update_applicant_data(form_data)
-        all_applicants = data_manager.list_all_applicants()
-        return render_template('all_applicants.html',
-                               all_applicants=all_applicants)
+        return render_template('index.html')
+
+
+@app.route('/delete-applicant/<id>')
+def delete_applicant(id):
+        data_manager.delete_applicant(id)
+        return render_template('index.html')
 
 
 if __name__ == '__main__':

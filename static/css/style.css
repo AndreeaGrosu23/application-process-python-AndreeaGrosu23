@@ -1,20 +1,22 @@
 html {
     font-family: "Adobe Garamond Pro" serif;
-    font-size: 40px;
+    font-size: 20px;
     padding: 15%;
-    background-color: darksalmon;
+    background-color: darkseagreen;
     color: darkgreen;
 }
 
 a {
-    background-color: lightslategray;
-    font-size: 40px;
+    display: inline-block;
+    color: lightslategray;
+    font-size: 20px;
+    padding: 30px;
 }
 
 #mentors {
-    background-color: darkorange;
+    color: darkred;
 }
 
 #names {
-    padding: 20%;
+    padding: 10%;
 }

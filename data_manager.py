@@ -83,13 +83,13 @@ def update_applicant_data(cursor, data):
     cursor.execute("""
                     UPDATE applicants
                     SET first_name=%s, last_name=%s, phone_number=%s, email=%s
-                    WHERE  id=%s;
+                    WHERE  id = %s ;
                     """,
-                   (data['id'],
-                    data['first_name'],
+                   (data['first_name'],
                     data['last_name'],
                     data['phone_number'],
-                    data['email'])
+                    data['email'],
+                    data['id'])
                    )
 
 
@@ -112,3 +112,11 @@ def display_applicant(cursor, id):
                    {'id': id})
     applicant=cursor.fetchone()
     return applicant
+
+@database_common.connection_handler
+def delete_applicant(cursor, id):
+    cursor.execute("""
+                    DELETE FROM applicants
+                    WHERE id = %(id)s;
+                    """,
+                   {'id': id})
