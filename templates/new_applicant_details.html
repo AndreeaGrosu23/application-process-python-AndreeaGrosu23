@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="new_applicant">
+            {{ first_name }}<br>
+            {{ last_name }}<br/>
+            {{ phone number }}<br/>
+            {{ email }}<br/>
+            {{ application_code }}<br/>
+    </div>
+
+    {% include 'footer.html' %}
+{% endblock %}
