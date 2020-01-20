@@ -2,11 +2,14 @@
 
 {% block content %}
     <div class="new_applicant">
-            {{ first_name }}<br>
-            {{ last_name }}<br/>
-            {{ phone number }}<br/>
-            {{ email }}<br/>
-            {{ application_code }}<br/>
+        {% for applicant in new_applicant %}
+            {{ applicant.id }}<br>
+            {{ applicant.first_name }}<br>
+            {{ applicant.last_name }}<br/>
+            {{ applicant.phone_number }}<br/>
+            {{ applicant.email }}<br/>
+            {{ applicant.application_code }}<br/>
+        {% endfor %}
     </div>
 
     {% include 'footer.html' %}

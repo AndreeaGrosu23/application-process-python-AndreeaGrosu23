@@ -6,6 +6,6 @@
     <a href="{{ url_for('carol_fullname') }}">Applicant name</a><br>
     <a href="{{ url_for('name_by_email') }}">Applicant name by email</a><br>
     <a href="{{ url_for('add_new_applicant') }}">Add applicant</a><br>
-    <a href="#">Update applicant</a><br>
+    <a href="{{ url_for('display_all_applicants') }}">Update applicant</a><br>
     <a href="#">Delete applicant</a>
 {% endblock %}

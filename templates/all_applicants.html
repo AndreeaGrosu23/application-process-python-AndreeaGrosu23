@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div id="applicants">
+    <table>
+    <tr>
+        <td>ID</td>
+        <td>First name</td>
+        <td>Last name</td>
+        <td>Phone number</td>
+        <td>Email</td>
+        <td>Application code</td>
+    </tr>
+    {% for applicant in all_applicants %}
+    <tr>
+        <td>{{ applicant.id }}</td>
+        <td><a href={{ url_for('update_applicant', id=applicant.id) }}>{{ applicant.first_name }}</a></td>
+        <td>{{ applicant.last_name }}</td>
+        <td>{{ applicant.phone_number }}</td>
+        <td>{{ applicant.email }}</td>
+        <td>{{ applicant.application_code }}</td>
+    </tr>
+    {% endfor%}
+    </table>
+    </div>
+
+    {% include 'footer.html' %}
+{% endblock %}

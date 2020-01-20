@@ -1,5 +1,5 @@
 import database_common
-
+import sys
 
 @database_common.connection_handler
 def get_mentor_names_by_first_name(cursor, first_name):
@@ -53,25 +53,62 @@ def get_full_name_with_email(cursor):
     return full_name
 
 @database_common.connection_handler
-def add_new_applicant(cursor, first_name, last_name, phone_number, email, application_code):
-    cursor.executemany("""
-                    INSERT INTO applicants (id, first_name, last_name, phone_number, email, application_code)
-                    VALUES (id.nextval, %(first_name)s, %(last_name)s, %(phone_number)s, %(email)s, %(application_code)s ;
+def add_new_applicant(cursor, data):
+    cursor.execute("""
+                    INSERT INTO applicants ( first_name, last_name, phone_number, email, application_code)
+                    VALUES ( %s, %s, %s, %s, %s) ;
                    """,
-                   {'first_name': first_name},
-                   {'last_name': last_name},
-                   {'phone_number': phone_number},
-                   {'email': email},
-                   {'application_code': application_code})
+                  (data['first_name'],
+                    data['last_name'],
+                    data['phone_number'],
+                    data['email'],
+                    data['application_code'])
+                    )
 
 
 @database_common.connection_handler
-def display_new_applicant(first_name):
+def display_new_applicant(cursor, application_code):
     cursor.execute("""
                     SELECT * FROM applicants
-                    WHERE first_name=%(first_name)s
+                    WHERE application_code=%(application_code)s;
                     """,
-                   {'first_name': first_name}
+                   {'application_code': application_code}
                    )
     new_applicant=cursor.fetchall()
     return new_applicant
+
+
+@database_common.connection_handler
+def update_applicant_data(cursor, data):
+    cursor.execute("""
+                    UPDATE applicants
+                    SET first_name=%s, last_name=%s, phone_number=%s, email=%s
+                    WHERE  id=%s;
+                    """,
+                   (data['id'],
+                    data['first_name'],
+                    data['last_name'],
+                    data['phone_number'],
+                    data['email'])
+                   )
+
+
+@database_common.connection_handler
+def list_all_applicants(cursor):
+    cursor.execute("""
+                    SELECT * FROM applicants
+                    ORDER BY id;
+                    """)
+    all_applicants=cursor.fetchall()
+    return all_applicants
+
+
+@database_common.connection_handler
+def display_applicant(cursor, id):
+    cursor.execute("""
+                    SELECT * FROM applicants
+                    WHERE id = %(id)s;
+                    """,
+                   {'id': id})
+    applicant=cursor.fetchone()
+    return applicant

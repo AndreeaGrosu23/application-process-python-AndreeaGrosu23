@@ -1,5 +1,5 @@
 import data_manager
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for, redirect
 
 app = Flask(__name__)
 
@@ -38,25 +38,48 @@ def add_new_applicant():
     if request.method == 'GET':
         return render_template('new_applicant.html')
     elif request.method == 'POST':
-        return render_template('index.html')
-        # first_name = request.form['first_name']
-        # last_name = request.form['last_name']
-        # phone_number = request.form['phone_number']
-        # email = request.form['email']
-        # application_code = 54823
-        # return redirect('new_applicant_details.html',
-        #                        first_name=first_name,
-        #                        last_name=last_name,
-        #                        phone_number=phone_number,
-        #                        email=email,
-        #                        application_code=application_code
-        #                        )
-        # try:
-        #     add_new_applicant(cursor, first_name, last_name, phone_number, email, application_code)
-        #     new_name =  display_new_applicant(first_name)
-        #     return redirect('new_applicant_details.html', new_name=new_name)
-        # except:
-        #     return "issue???"
+
+        form_data = {
+            'first_name': request.form['first_name'],
+            'last_name' : request.form['last_name'],
+            'phone_number' : request.form['phone_number'],
+            'email' : request.form['email'],
+            'application_code': int(54823)
+        }
+
+        data_manager.add_new_applicant(form_data)
+
+
+        new_applicant = data_manager.display_new_applicant(54823)
+
+        return render_template('new_applicant_details.html',
+                               new_applicant=new_applicant)
+
+@app.route('/display-all-applicants')
+@app.route('/update-applicant')
+def display_all_applicants():
+    all_applicants = data_manager.list_all_applicants()
+    return render_template('all_applicants.html',
+                           all_applicants=all_applicants)
+
+
+@app.route('/update-applicant/<id>')
+def update_applicant(id):
+    if request.method == 'GET':
+        applicant=data_manager.display_applicant(id)
+        return render_template('update_applicant.html', applicant=applicant, id=id)
+    elif request.method == 'POST':
+        form_data = {
+            'id': request.form['id'],
+            'first_name': request.form['first_name'],
+            'last_name': request.form['last_name'],
+            'phone_number': request.form['phone_number'],
+            'email': request.form['email']
+        }
+        data_manager.update_applicant_data(form_data)
+        all_applicants = data_manager.list_all_applicants()
+        return render_template('all_applicants.html',
+                               all_applicants=all_applicants)
 
 
 if __name__ == '__main__':
